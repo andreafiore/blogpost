@@ -6,30 +6,39 @@
 package com.blogpost.model;
 
 import java.util.List;
+import javax.persistence.*;
 
 /**
  *
  * @author Andrea
  */
+@Entity
 public class Blogpost {
-    
+  
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+    @Column(name="title")
     private String title;
+    @Column(name="content")
     private String content;
+    @Column(name="category")
     private String category;
+    @Column(name="author")
     private String author;
+    @Column(name="image")
     private String image;
-    private List<String> tags;
+    //private List<String> tags;
     
     public Blogpost() {}
 
-    public Blogpost(String title, String content, String category, String author, String image, List<String> tags) {
+    public Blogpost(String title, String content, String category, String author, String image /*List<String> tags*/) {
         this.title = title;
         this.content = content;
         this.category = category;
         this.author = author;
         this.image = image;
-        this.tags = tags;
+        //this.tags = tags;
     }
     
     public long getId() {
@@ -76,14 +85,12 @@ public class Blogpost {
         this.image = image;
     }
 
-    public List<String> getTags() {
+   /* public List<String> getTags() {
         return tags;
     }
 
     public void setTags(List<String> tags) {
         this.tags = tags;
-    }
-    
-    
+    }*/
     
 }

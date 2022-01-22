@@ -15,9 +15,10 @@ import org.springframework.stereotype.Repository;
  * @author Andrea
  */
 @Repository
-public interface BlogpostRepository extends CrudRepository<Long, Blogpost>{
+public interface BlogpostRepository extends CrudRepository<Blogpost, Long>{
     
-    public void save(Blogpost blogpost);
+    @Override
+    public Blogpost save(Blogpost blogpost);
     
     public Blogpost findByTitleAndCategory(String title, String category);
     
