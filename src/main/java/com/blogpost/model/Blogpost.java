@@ -28,7 +28,8 @@ public class Blogpost {
     private String author;
     @Column(name="image")
     private String image;
-    //private List<String> tags;
+    @Transient
+    private List<String> tags;
     
     public Blogpost() {}
 
