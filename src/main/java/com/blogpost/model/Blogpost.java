@@ -17,26 +17,27 @@ public class Blogpost {
   
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    @Column(name="id")
+    private Long id;
     @Column(name="title")
     private String title;
     @Column(name="content")
     private String content;
-    @Column(name="category")
-    private String category;
     @Column(name="author")
     private String author;
     @Column(name="image")
     private String image;
     @Transient
     private List<String> tags;
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="categoryId")
+    private Category category;
     
     public Blogpost() {}
 
-    public Blogpost(String title, String content, String category, String author, String image /*List<String> tags*/) {
+    public Blogpost(String title, String content, String author, String image /*List<String> tags*/) {
         this.title = title;
         this.content = content;
-        this.category = category;
         this.author = author;
         this.image = image;
         //this.tags = tags;
@@ -62,14 +63,6 @@ public class Blogpost {
         this.content = content;
     }
 
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
     public String getAuthor() {
         return author;
     }
@@ -84,6 +77,14 @@ public class Blogpost {
 
     public void setImage(String image) {
         this.image = image;
+    }
+    
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
    /* public List<String> getTags() {
