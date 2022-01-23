@@ -5,7 +5,6 @@
  */
 package com.cloudacademy.blogpost.model;
 
-import java.util.List;
 import java.util.Set;
 import javax.persistence.*;
 
@@ -14,7 +13,8 @@ import javax.persistence.*;
  * @author Andrea
  */
 @Entity
-public class Blogpost {
+@Table(name="Post")
+public class Post {
   
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,9 +34,9 @@ public class Blogpost {
     @JoinColumn(name="categoryId")
     private Category category;
     
-    public Blogpost() {}
+    public Post() {}
 
-    public Blogpost(String title, String content, String author, String image) {
+    public Post(String title, String content, String author, String image) {
         this.title = title;
         this.content = content;
         this.author = author;
