@@ -6,6 +6,7 @@
 package com.blogpost.model;
 
 import java.util.List;
+import java.util.Set;
 import javax.persistence.*;
 
 /**
@@ -27,20 +28,19 @@ public class Blogpost {
     private String author;
     @Column(name="image")
     private String image;
-    @Transient
-    private List<String> tags;
+    @ManyToMany(fetch=FetchType.LAZY)
+    private Set<Tag> tags;
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="categoryId")
     private Category category;
     
     public Blogpost() {}
 
-    public Blogpost(String title, String content, String author, String image /*List<String> tags*/) {
+    public Blogpost(String title, String content, String author, String image) {
         this.title = title;
         this.content = content;
         this.author = author;
         this.image = image;
-        //this.tags = tags;
     }
     
     public Long getId() {
@@ -87,12 +87,12 @@ public class Blogpost {
         this.category = category;
     }
 
-   /* public List<String> getTags() {
+    public Set<Tag> getTags() {
         return tags;
     }
 
-    public void setTags(List<String> tags) {
+    public void setTags(Set<Tag> tags) {
         this.tags = tags;
-    }*/
+    }
     
 }

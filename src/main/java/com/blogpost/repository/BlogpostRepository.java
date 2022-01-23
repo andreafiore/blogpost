@@ -20,6 +20,9 @@ public interface BlogpostRepository extends CrudRepository<Blogpost, Long>{
     @Override
     public Blogpost save(Blogpost blogpost);
     
+    @Override
+    public void deleteById(Long blogpostId);
+    
     public Blogpost findByTitleAndCategory(String title, String category);
     
     public Blogpost findByTitleOrCategory(String title, String category);
