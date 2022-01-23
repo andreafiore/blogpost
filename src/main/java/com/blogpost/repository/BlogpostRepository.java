@@ -6,7 +6,10 @@
 package com.blogpost.repository;
 
 import com.blogpost.model.Blogpost;
+import com.blogpost.model.Category;
+import com.blogpost.model.Tag;
 import java.util.List;
+import java.util.Set;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -23,11 +26,13 @@ public interface BlogpostRepository extends CrudRepository<Blogpost, Long>{
     @Override
     public void deleteById(Long blogpostId);
     
+    public Blogpost update(Blogpost blogpost);
+    
     public Blogpost findByTitleAndCategory(String title, String category);
     
-    public Blogpost findByTitleOrCategory(String title, String category);
+    public List<Blogpost> findByTags(Set<Tag> tags);
     
-    public List<Blogpost> findByTitleAndTags(String title, List<String> tags);
+    public Blogpost setCategory(Blogpost blogpost, Category category);
     
-    public Blogpost assignBlogpostToCategory(Blogpost blogpost, String category);
+    public Blogpost setTags(Blogpost blogpost, Set<Tag> tags);
 }
