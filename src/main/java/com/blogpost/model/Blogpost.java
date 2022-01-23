@@ -16,7 +16,7 @@ import javax.persistence.*;
 public class Blogpost {
   
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     private Long id;
     @Column(name="title")
@@ -43,7 +43,7 @@ public class Blogpost {
         //this.tags = tags;
     }
     
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
