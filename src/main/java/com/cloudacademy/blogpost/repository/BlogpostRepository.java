@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.blogpost.repository;
+package com.cloudacademy.blogpost.repository;
 
-import com.blogpost.model.Blogpost;
-import com.blogpost.model.Category;
-import com.blogpost.model.Tag;
+import com.cloudacademy.blogpost.model.Blogpost;
+import com.cloudacademy.blogpost.model.Category;
+import com.cloudacademy.blogpost.model.Tag;
 import java.util.List;
 import java.util.Set;
 import org.springframework.data.repository.CrudRepository;
