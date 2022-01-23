@@ -8,18 +8,12 @@ package com.cloudacademy.blogpost.config;
 import com.cloudacademy.blogpost.model.Category;
 import com.cloudacademy.blogpost.model.Post;
 import com.cloudacademy.blogpost.model.Tag;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-import org.hibernate.HibernateException;
-import org.hibernate.SessionFactory;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
-import org.hibernate.service.ServiceRegistry;
 
 /**
  *
@@ -27,12 +21,13 @@ import org.hibernate.service.ServiceRegistry;
  */
 public class HibernateConfiguration {
     
-    private static final String DRIVER_PARAMETER = "db.driverClassName";
-    private static final String URL_PARAMETER = "db.url";
-    private static final String USER_PARAMETER = "db.driverClassName";
-    private static final String PASSWORD_PARAMETER = "db.driverClassName";
-    private static final String HIBERNATE_DIALECT = "db.driverClassName";
-    private static final String SHOW_SQL = "db.show-sql";
+    private static final String DRIVER_PARAMETER = "database.driverClassName";
+    private static final String URL_PARAMETER = "database.url";
+    private static final String USER_PARAMETER = "database.username";
+    private static final String PASSWORD_PARAMETER = "database.password";
+    private static final String HIBERNATE_DIALECT = "hibernate.dialect";
+    private static final String SHOW_SQL = "database.show-sql";
+    private static final String HBM2DDL_AUTO = "hibernate.hbm2ddl.auto";
     
     
     
@@ -51,7 +46,7 @@ public class HibernateConfiguration {
             configProps.put(Environment.DIALECT, props.getProperty(HIBERNATE_DIALECT));
             configProps.put(Environment.SHOW_SQL, props.getProperty(SHOW_SQL));
             configProps.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
-            configProps.put(Environment.HBM2DDL_AUTO, props.getProperty("db.hibernate.ddl-auto"));
+            configProps.put(Environment.HBM2DDL_AUTO, props.getProperty(HBM2DDL_AUTO));
             configuration.setProperties(configProps);
             
             configuration.addAnnotatedClass(Post.class);

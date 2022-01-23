@@ -7,10 +7,6 @@ package com.cloudacademy.blogpost.repository;
 
 import com.cloudacademy.blogpost.model.Post;
 import com.cloudacademy.blogpost.model.Category;
-import com.cloudacademy.blogpost.model.Tag;
-import java.util.List;
-import java.util.Set;
-//import org.springframework.data.jpa.repository.Query;
 
 /**
  *
@@ -19,18 +15,17 @@ import java.util.Set;
 
 public interface BlogpostRepository {
     
-    public Post save(Post blogpost);
+    public Post createPost(Post blogpost);
     
-    public void deleteById(Long blogpostId);
+    public void deletePost(Post post);
     
-    public Post update(Post blogpost);
+    public Post updatePost(Post blogpost);
     
-    /*@Query("SELECT b FROM blogpost AS b WHERE b.title = :title AND b.category.categoryId = :categoryId")
-    public Blogpost findByTitleAndCategoryId(String title, Long categoryId);
-    
-    public List<Blogpost> findByTags(Set<Tag> tags); */
+    public Post findByTitleAndCategoryId(String title, Long categoryId);
     
     public Post setCategory(Post blogpost, Category category);
+    
+    //public List<Blogpost> findByTags(Set<Tag> tags); */
     
     //public Blogpost setTags(Blogpost blogpost, Set<Tag> tags);
 }

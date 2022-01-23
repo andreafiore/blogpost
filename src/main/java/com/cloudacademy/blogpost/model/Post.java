@@ -5,6 +5,7 @@
  */
 package com.cloudacademy.blogpost.model;
 
+import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.*;
 
@@ -14,7 +15,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="Post")
-public class Post {
+public class Post implements Serializable{
   
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -94,5 +95,4 @@ public class Post {
     public void setTags(Set<Tag> tags) {
         this.tags = tags;
     }
-    
 }
