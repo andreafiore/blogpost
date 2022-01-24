@@ -75,6 +75,14 @@ public class PostServiceTest {
     }
     
     @Test
+    public void getPosts() {
+        List<Post> posts = Arrays.asList(new Post("", "", "", ""), new Post("a", "b", "c", "d"));
+        when(postRepository.findAll()).thenReturn(posts);
+        List<Post> p = service.getPosts();
+        assertEquals(p.size(), 2);
+    }
+    
+    @Test
     public void createPostTest() {
         when(postRepository.save(any(Post.class))).thenReturn(new Post("title", "content", "auth", "img.jpg"));
 
