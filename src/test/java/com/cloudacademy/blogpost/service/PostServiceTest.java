@@ -21,6 +21,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
 import com.cloudacademy.blogpost.repository.PostRepository;
+import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
 
 
 /**
@@ -100,6 +102,29 @@ public class PostServiceTest {
         
         assertEquals(updatedPost.getTitle(), "SetCategory");
         assertEquals(updatedPost.getCategory().getName(), "Nature");
+    }
+    
+    @Test
+    public void setCategoryTestPostNotFound() throws Exception {
+        Category category = new Category("Nature");
+        when(postRepository.findById(any(Long.class))).thenReturn(Optional.empty());
+        when(categoryRepository.findById(any(Long.class))).thenReturn(Optional.of(category));
+        
+        PostNotFoundException exception = assertThrows(PostNotFoundException.class, () -> {
+            service.setCategory(1L, 1L);
+        });
+        System.out.println(exception.toString());
+        assertTrue(exception.toString().contains("PostNotFoundException"));
+    }
+    
+    @Test
+    public void setCategoryTestCategoryNotFound() throws Exception {
+        when(categoryRepository.findById(any(Long.class))).thenReturn(Optional.empty());
+        CategoryNotFoundException exception = assertThrows(CategoryNotFoundException.class, () -> {
+            service.setCategory(1L, 1L);
+        });
+        System.out.println(exception.toString());
+        assertTrue(exception.toString().contains("CategoryNotFoundException"));
     }
 
 }

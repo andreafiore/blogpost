@@ -49,11 +49,11 @@ public class PostService {
     
     //public Post findByTitleAndCategory(Long postId, Long categoryId)
     @Transactional
-    public Post setCategory(Long postId, Long categoryId) throws Exception {
+    public Post setCategory(Long postId, Long categoryId) throws PostNotFoundException, CategoryNotFoundException {
         Optional<Category> categoryOpt = categoryRepository.findById(categoryId);
-        if(!categoryOpt.isPresent()) throw new Exception();
+        if(!categoryOpt.isPresent()) throw new CategoryNotFoundException();
         Optional<Post> postOpt = postRepository.findById(postId);
-        if(!postOpt.isPresent()) throw new Exception();
+        if(!postOpt.isPresent()) throw new PostNotFoundException();
         Post post = postOpt.get();
         Category category = categoryOpt.get();
         post.setCategory(category);
