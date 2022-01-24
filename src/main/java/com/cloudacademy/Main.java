@@ -17,10 +17,10 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
  * @author Andrea
  */
 @EnableAutoConfiguration
-@EnableJpaRepositories("com.cloudacademy.blogspot.*")
+@EnableJpaRepositories("com.cloudacademy.blogpost.*")
 @SpringBootApplication
-@EntityScan("com.cloudacademy.blogspot.*")
-@ComponentScan(basePackages = { "com.cloudacademy.blogspot.*" })
+@EntityScan("com.cloudacademy.blogpost.*")
+@ComponentScan(basePackages = { "com.cloudacademy.blogpost.*" })
 public class Main {
     public static void main(String[] args) {
         SpringApplication.run(Main.class, args);

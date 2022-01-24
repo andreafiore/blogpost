@@ -19,20 +19,20 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface BlogpostRepository extends CrudRepository<Post, Long>{
-    
+
     @Override
     public Post save(Post blogpost);
-    
+
     @Override
     public void deleteById(Long blogpostId);
-    
-    public Post update(Post blogpost);
-    
+
+    //public Post update(Post blogpost);
+
     /*public Blogpost findByTitleAndCategory(String title, String category);
-    
-    public List<Blogpost> findByTags(Set<Tag> tags);
-    
+
+    //public Post setCategory(Post blogpost, Category category);
+
     public Blogpost setCategory(Blogpost blogpost, Category category);
-    
+
     public Blogpost setTags(Blogpost blogpost, Set<Tag> tags);*/
 }

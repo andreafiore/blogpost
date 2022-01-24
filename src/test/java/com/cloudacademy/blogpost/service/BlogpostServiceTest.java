@@ -16,24 +16,27 @@ import org.mockito.Mock;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
 
+
 /**
  *
  * @author Andrea
  */
 @RunWith(MockitoJUnitRunner.class)
 public class BlogpostServiceTest {
-    
+
     @Mock
     BlogpostRepository repository;
-    
+
     @InjectMocks
     BlogpostService service;
-    
+
     @Test
     public void createPostTest() {
         when(repository.save(any(Post.class))).thenReturn(new Post());
+
         Post post = service.createPost("", "", "", "");
+
         assertNotNull(post);
     }
-    
+
 }

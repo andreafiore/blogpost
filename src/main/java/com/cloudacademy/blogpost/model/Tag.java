@@ -5,6 +5,7 @@
  */
 package com.cloudacademy.blogpost.model;
 
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,7 +17,7 @@ import javax.persistence.Id;
  * @author Andrea
  */
 @Entity
-public class Tag {
+public class Tag implements Serializable {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

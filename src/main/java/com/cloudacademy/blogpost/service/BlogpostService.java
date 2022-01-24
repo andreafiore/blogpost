@@ -16,12 +16,12 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class BlogpostService {
-    
+
     @Autowired
     BlogpostRepository repository;
-    
+
     public Post createPost(String title, String content, String author, String image) {
         Post post = new Post(title, content, author, image);
         return repository.save(post);
-    } 
+    }
 }

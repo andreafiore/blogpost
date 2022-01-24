@@ -5,7 +5,7 @@
  */
 package com.cloudacademy.blogpost.model;
 
-import java.util.List;
+import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.*;
 
@@ -15,7 +15,7 @@ import javax.persistence.*;
  */
 @Entity
 public class Post {
-  
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
@@ -33,7 +33,7 @@ public class Post {
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="categoryId")
     private Category category;
-    
+
     public Post() {}
 
     public Post(String title, String content, String author, String image) {
@@ -42,7 +42,7 @@ public class Post {
         this.author = author;
         this.image = image;
     }
-    
+
     public Long getId() {
         return id;
     }
@@ -78,7 +78,7 @@ public class Post {
     public void setImage(String image) {
         this.image = image;
     }
-    
+
     public Category getCategory() {
         return category;
     }
@@ -94,5 +94,5 @@ public class Post {
     public void setTags(Set<Tag> tags) {
         this.tags = tags;
     }
-    
+
 }
