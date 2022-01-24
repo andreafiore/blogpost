@@ -24,4 +24,8 @@ public class BlogpostService {
         Post post = new Post(title, content, author, image);
         return repository.save(post);
     }
+
+    public void deletePost(long l) {
+        repository.deleteById(l);
+    }
 }

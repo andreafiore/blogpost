@@ -7,12 +7,15 @@ package com.cloudacademy.blogpost.service;
 
 import com.cloudacademy.blogpost.model.Post;
 import com.cloudacademy.blogpost.repository.BlogpostRepository;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.mockito.ArgumentMatchers.any;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -32,11 +35,24 @@ public class BlogpostServiceTest {
 
     @Test
     public void createPostTest() {
-        when(repository.save(any(Post.class))).thenReturn(new Post());
+        when(repository.save(any(Post.class))).thenReturn(new Post("title", "content", "auth", "img.jpg"));
 
         Post post = service.createPost("", "", "", "");
 
         assertNotNull(post);
+        assertEquals(post.getAuthor(), "auth");
+        assertEquals(post.getContent(), "content");
+        assertEquals(post.getAuthor(), "auth");
+        assertEquals(post.getImage(), "img.jpg");
+    }
+    
+    @Test
+    public void deletePostTest() {
+        doNothing().when(repository).deleteById(any(Long.class));
+        
+        service.deletePost(1L);
+        
+        verify(repository).deleteById(any(Long.class));
     }
 
 }
