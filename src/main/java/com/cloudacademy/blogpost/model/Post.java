@@ -14,7 +14,7 @@ import javax.persistence.*;
  * @author Andrea
  */
 @Entity
-public class Blogpost {
+public class Post {
   
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,9 +34,9 @@ public class Blogpost {
     @JoinColumn(name="categoryId")
     private Category category;
     
-    public Blogpost() {}
+    public Post() {}
 
-    public Blogpost(String title, String content, String author, String image) {
+    public Post(String title, String content, String author, String image) {
         this.title = title;
         this.content = content;
         this.author = author;
