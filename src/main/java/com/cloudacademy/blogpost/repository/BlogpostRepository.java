@@ -6,10 +6,6 @@
 package com.cloudacademy.blogpost.repository;
 
 import com.cloudacademy.blogpost.model.Post;
-import com.cloudacademy.blogpost.model.Category;
-import com.cloudacademy.blogpost.model.Tag;
-import java.util.List;
-import java.util.Set;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
