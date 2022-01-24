@@ -22,9 +22,12 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
 import com.cloudacademy.blogpost.repository.PostRepository;
+import com.cloudacademy.blogpost.repository.TagRepository;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
@@ -42,10 +45,35 @@ public class PostServiceTest {
     
     @Mock
     CategoryRepository categoryRepository;
+    
+    @Mock
+    TagRepository tagRepository;
 
     @InjectMocks
     PostService service;
 
+    @Test
+    public void getPostTest() throws PostNotFoundException {
+        Post post = new Post("title", "content", "author", "image_123.jpg");
+        when(postRepository.findById(any(Long.class))).thenReturn(Optional.of(post));
+        
+        Post p = service.getPost(2L);
+        assertNotNull(p);
+        assertEquals(p.getTitle(), "title");
+        assertEquals(p.getAuthor(), "author");
+        assertEquals(p.getContent(), "content");
+        assertEquals(p.getImage(), "image_123.jpg");
+    }
+    
+    @Test
+    public void getPostNotFound() throws PostNotFoundException {
+        when(postRepository.findById(any(Long.class))).thenReturn(Optional.empty());
+        PostNotFoundException exception = assertThrows(PostNotFoundException.class, () -> {
+            service.getPost(2L);
+        });
+        assertTrue(exception.toString().contains("PostNotFoundException"));
+    }
+    
     @Test
     public void createPostTest() {
         when(postRepository.save(any(Post.class))).thenReturn(new Post("title", "content", "auth", "img.jpg"));
@@ -154,5 +182,56 @@ public class PostServiceTest {
         
         assertEquals(retrievedPosts.size(), 1);
     }
+    
+    @Test
+    public void addTagTest() throws PostNotFoundException {
+        Post post = new Post("", "", "", "");
+        Tag tag = new Tag("test_test");
+        when(postRepository.findById(any(Long.class))).thenReturn(Optional.of(post));
+        when(tagRepository.save(any(Tag.class))).thenReturn(tag);
+        Post newPost = new Post("", "", "", "");
+        newPost.setTags(Arrays.asList(tag).stream().collect(toSet()));
+        when(postRepository.save(any(Post.class))).thenReturn(newPost);
+        
+        Post postUpdated = service.addTag(1L, "test_test");
+        assertNotNull(postUpdated);
+        assertEquals(postUpdated.getTags().size(), 1);
+        assertEquals(postUpdated.getTags().stream().collect(toList()).get(0).getTagName(), "test_test");
+    }
+    
+    @Test
+    public void addTagTestPostNotFound() throws PostNotFoundException {
+        when(postRepository.findById(any(Long.class))).thenReturn(Optional.empty());
+        PostNotFoundException exception = assertThrows(PostNotFoundException.class, () -> {
+            service.addTag(1L, "test");
+        });
+        assertTrue(exception.toString().contains("PostNotFoundException"));
+    }
+    
+    @Test
+    public void removeTag() throws PostNotFoundException {
+        Post post = new Post("", "", "", "");
+        Tag tag = new Tag("tag");
+        tag.setId(1L);
+        post.setTags(Arrays.asList(tag).stream().collect(toSet()));
+        when(postRepository.findById(any(Long.class))).thenReturn(Optional.of(post));
+        
+        Set<Tag> emptySet = (new ArrayList<Tag>()).stream().collect(toSet());
+        post.setTags(emptySet);
+        when(postRepository.save(any(Post.class))).thenReturn(post);
+        
+        Post p = service.removeTag(1L, 1L);
+        assertNotNull(p);
+    }
+    
+    @Test
+    public void removeTagPostNotFound() throws PostNotFoundException {
+        when(postRepository.findById(any(Long.class))).thenReturn(Optional.empty());
+        PostNotFoundException exception = assertThrows(PostNotFoundException.class, () -> {
+            service.addTag(1L, "test");
+        });
+        assertTrue(exception.toString().contains("PostNotFoundException"));
+    }
+    
 
 }

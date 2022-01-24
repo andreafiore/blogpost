@@ -20,4 +20,6 @@ public interface TagRepository extends CrudRepository<Tag, Long> {
     @Override
     public Tag save(Tag tag);
     
+    
+    public Tag findByTagName(String tagName);
 }

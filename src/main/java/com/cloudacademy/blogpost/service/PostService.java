@@ -13,6 +13,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.cloudacademy.blogpost.repository.PostRepository;
+import com.cloudacademy.blogpost.repository.TagRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -32,6 +33,22 @@ public class PostService {
     
     @Autowired
     CategoryRepository categoryRepository;
+    
+    @Autowired
+    TagRepository tagsRepository;
+    
+    public Post getPost(Long postId) throws PostNotFoundException {
+        Optional<Post> postOpt = postRepository.findById(postId);
+        if(!postOpt.isPresent()) throw new PostNotFoundException();
+        return postOpt.get();
+    }
+    
+    public List<Post> getPosts() {
+        List<Post> ret = new ArrayList();
+        Iterable<Post> iterable = postRepository.findAll();
+        for(Post post : iterable) ret.add(post);
+        return ret;
+    }
 
     public Post createPost(String title, String content, String author, String image) {
         Post post = new Post(title, content, author, image);
@@ -71,10 +88,35 @@ public class PostService {
         List<Post> ret = new ArrayList();
         for(Post post : posts) {
             Set<Tag> tags = post.getTags();
-            Set<String> storedTagNames = tags.stream().map(t -> t.getTag()).collect(toSet());
+            Set<String> storedTagNames = tags.stream().map(t -> t.getTagName()).collect(toSet());
             if (storedTagNames.containsAll(tagNames))
                 ret.add(post);
         }
         return ret;
+    }
+    
+    @Transactional
+    public Post addTag(Long postId, String tagName) throws PostNotFoundException {
+        Optional<Post> postOpt = postRepository.findById(postId);
+        if (!postOpt.isPresent()) throw new PostNotFoundException();
+        Post post = postOpt.get();
+        Set<Tag> tags = post.getTags();
+        if (tags == null) {
+            tags = new ArrayList<Tag>().stream().collect(toSet());
+            post.setTags(tags);
+        }
+        Tag savedTag = tagsRepository.save(new Tag(tagName));
+        tags.add(savedTag);
+        return postRepository.save(post);
+    }
+    
+    @Transactional
+    public Post removeTag(Long postId, Long tagId) throws PostNotFoundException {
+        Optional<Post> postOpt = postRepository.findById(postId);
+        if (!postOpt.isPresent()) throw new PostNotFoundException();
+        Post post = postOpt.get();
+        Set<Tag> tags = post.getTags();
+        tags.removeIf(t -> tagId.equals(t.getId()));
+        return postRepository.save(post);
     }
 }

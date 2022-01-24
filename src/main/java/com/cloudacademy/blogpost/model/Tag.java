@@ -23,13 +23,13 @@ public class Tag implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @Column(name="tag")
-    private String tag;
+    @Column(name="tagName")
+    private String tagName;
     
     public Tag(){}
     
     public Tag(String tag) {
-        this.tag = tag;
+        this.tagName = tag;
     }
     
     public Long getId() {
@@ -40,11 +40,11 @@ public class Tag implements Serializable {
         this.id = id;
     }
     
-    public String getTag() {
-        return tag;
+    public String getTagName() {
+        return tagName;
     }
     
-    public void setTag(String tag) {
-        this.tag = tag;
+    public void setTagName(String tagName) {
+        this.tagName = tagName;
     }
 }
