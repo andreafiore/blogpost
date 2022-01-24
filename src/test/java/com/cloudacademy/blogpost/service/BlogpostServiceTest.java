@@ -7,6 +7,7 @@ package com.cloudacademy.blogpost.service;
 
 import com.cloudacademy.blogpost.model.Post;
 import com.cloudacademy.blogpost.repository.BlogpostRepository;
+import java.util.Optional;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
@@ -40,7 +41,7 @@ public class BlogpostServiceTest {
         Post post = service.createPost("", "", "", "");
 
         assertNotNull(post);
-        assertEquals(post.getAuthor(), "auth");
+        assertEquals(post.getTitle(), "title");
         assertEquals(post.getContent(), "content");
         assertEquals(post.getAuthor(), "auth");
         assertEquals(post.getImage(), "img.jpg");
@@ -53,6 +54,32 @@ public class BlogpostServiceTest {
         service.deletePost(1L);
         
         verify(repository).deleteById(any(Long.class));
+    }
+    
+    @Test
+    public void updatePost() throws PostNotFoundException {
+        Post post = new Post("Post test", "content", "author", "xxx.jpg");
+        when(repository.findById(any(Long.class))).thenReturn(Optional.of(post));
+        when(repository.save(any(Post.class))).thenReturn(new Post("new Post test", "new content", "author1", "yyy.jpg"));
+        
+        Post updatedPost = service.updatePost(1L, "new Post test", "new content", "author1", "yyy.jpg");
+        assertEquals(updatedPost.getTitle(), "new Post test");
+        assertEquals(updatedPost.getContent(), "new content");
+        assertEquals(updatedPost.getAuthor(), "author1");
+        assertEquals(updatedPost.getImage(), "yyy.jpg");
+    }
+    
+    @Test
+    public void partialUpdatePost() throws PostNotFoundException {
+        Post post = new Post("Test", "Lorem Ipsum...", "Foo Bar", "abc.jpg");
+        when(repository.findById(any(Long.class))).thenReturn(Optional.of(post));
+        when(repository.save(any(Post.class))).thenReturn(new Post("new Post test", "Lorem Ipsum...", "Foo Bar", "xyz.jpg"));
+        
+        Post updatedPost = service.updatePost(1L, "new Post test", null, null, null);
+        assertEquals(updatedPost.getTitle(), "new Post test");
+        assertEquals(updatedPost.getContent(), "Lorem Ipsum...");
+        assertEquals(updatedPost.getAuthor(), "Foo Bar");
+        assertEquals(updatedPost.getImage(), "xyz.jpg");
     }
 
 }
