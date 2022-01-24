@@ -5,7 +5,7 @@
  */
 package com.cloudacademy.blogpost.repository;
 
-import com.cloudacademy.blogpost.model.Blogpost;
+import com.cloudacademy.blogpost.model.Post;
 import com.cloudacademy.blogpost.model.Category;
 import com.cloudacademy.blogpost.model.Tag;
 import java.util.List;
@@ -18,21 +18,19 @@ import org.springframework.stereotype.Repository;
  * @author Andrea
  */
 @Repository
-public interface BlogpostRepository extends CrudRepository<Blogpost, Long>{
+public interface BlogpostRepository extends CrudRepository<Post, Long>{
     
     @Override
-    public Blogpost save(Blogpost blogpost);
+    public Post save(Post blogpost);
     
     @Override
     public void deleteById(Long blogpostId);
     
-    public Blogpost update(Blogpost blogpost);
+    public Post findByTitleAndCategory(String title, String category);
     
-    public Blogpost findByTitleAndCategory(String title, String category);
+    //public List<Post> findByTags(Set<Tag> tags);
     
-    public List<Blogpost> findByTags(Set<Tag> tags);
+    //public Post setCategory(Post blogpost, Category category);
     
-    public Blogpost setCategory(Blogpost blogpost, Category category);
-    
-    public Blogpost setTags(Blogpost blogpost, Set<Tag> tags);
+    //public Post setTags(Post blogpost, Set<Tag> tags);
 }
