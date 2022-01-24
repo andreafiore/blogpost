@@ -7,6 +7,7 @@ package com.cloudacademy.blogpost.service;
 
 import com.cloudacademy.blogpost.model.Category;
 import com.cloudacademy.blogpost.model.Post;
+import com.cloudacademy.blogpost.model.Tag;
 import com.cloudacademy.blogpost.repository.CategoryRepository;
 import java.util.Optional;
 import static org.junit.Assert.assertEquals;
@@ -21,6 +22,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
 import com.cloudacademy.blogpost.repository.PostRepository;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
+import static java.util.stream.Collectors.toSet;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
@@ -125,6 +130,29 @@ public class PostServiceTest {
         });
         System.out.println(exception.toString());
         assertTrue(exception.toString().contains("CategoryNotFoundException"));
+    }
+    
+    @Test
+    public void findByTitleOrCategoryNameAndTags() {
+        Set<Tag> tagSet1 = Arrays.asList(new Tag("nature"), new Tag("animals"), new Tag("photo")).stream().collect(toSet());
+        Set<Tag> tagSet2 = Arrays.asList(new Tag("animals"), new Tag("food")).stream().collect(toSet());
+        Category cat1 = new Category("Cat1");
+        Category cat2 = new Category("Cat2");
+        Post post1 = new Post("title1", "", "", "");
+        Post post2 = new Post("title2", "", "", "");
+        
+        post1.setCategory(cat1);
+        post1.setTags(tagSet1);
+        
+        post2.setCategory(cat2);
+        post2.setTags(tagSet2);
+        
+        List<Post> posts = Arrays.asList(post1, post2);
+        when(postRepository.findByTitleOrCategoryName(any(String.class), any(String.class))).thenReturn(posts);
+        
+        List<Post> retrievedPosts = service.findByTitleOrCategoryNameAndTags("title1", "Cat2", Arrays.asList("food").stream().collect(toSet()));
+        
+        assertEquals(retrievedPosts.size(), 1);
     }
 
 }

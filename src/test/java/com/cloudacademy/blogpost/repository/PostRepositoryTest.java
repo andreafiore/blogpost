@@ -7,6 +7,7 @@ package com.cloudacademy.blogpost.repository;
 
 import com.cloudacademy.blogpost.model.Category;
 import com.cloudacademy.blogpost.model.Post;
+import java.util.List;
 import java.util.Optional;
 import javax.transaction.Transactional;
 import static org.junit.Assert.assertEquals;
@@ -69,6 +70,23 @@ public class PostRepositoryTest {
         Post found = postRepository.findByTitleAndCategoryName("a", "Food");
         assertEquals(found.getTitle(), "a");
         assertEquals(found.getCategory().getName(), "Food");
+    }
+    
+    @Test
+    @Transactional
+    public void findByTitleOrCategoryNameTest() {
+        Post post = new Post("a", "b", "c", "d");
+        Category category = new Category("Food");
+        Post post2 = new Post("title", "", "", "");
+        categoryRepository.save(category);
+        post.setCategory(category);
+        post2.setCategory(category);
+        
+        postRepository.save(post);
+        postRepository.save(post2);
+        
+        List<Post> found = postRepository.findByTitleOrCategoryName("a", "Food");
+        assertEquals(found.size(), 2);
     }
     
 }

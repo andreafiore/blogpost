@@ -7,11 +7,17 @@ package com.cloudacademy.blogpost.service;
 
 import com.cloudacademy.blogpost.model.Category;
 import com.cloudacademy.blogpost.model.Post;
+import com.cloudacademy.blogpost.model.Tag;
 import com.cloudacademy.blogpost.repository.CategoryRepository;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.cloudacademy.blogpost.repository.PostRepository;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 import javax.transaction.Transactional;
 
 /**
@@ -47,7 +53,6 @@ public class PostService {
         return postRepository.save(post);
     }
     
-    //public Post findByTitleAndCategory(Long postId, Long categoryId)
     @Transactional
     public Post setCategory(Long postId, Long categoryId) throws PostNotFoundException, CategoryNotFoundException {
         Optional<Category> categoryOpt = categoryRepository.findById(categoryId);
@@ -58,5 +63,18 @@ public class PostService {
         Category category = categoryOpt.get();
         post.setCategory(category);
         return postRepository.save(post);
+    }
+    
+    @Transactional
+    public List<Post> findByTitleOrCategoryNameAndTags(String title, String categoryName, Set<String> tagNames) {
+        List<Post> posts = postRepository.findByTitleOrCategoryName(title, categoryName);
+        List<Post> ret = new ArrayList();
+        for(Post post : posts) {
+            Set<Tag> tags = post.getTags();
+            Set<String> storedTagNames = tags.stream().map(t -> t.getTag()).collect(toSet());
+            if (storedTagNames.containsAll(tagNames))
+                ret.add(post);
+        }
+        return ret;
     }
 }

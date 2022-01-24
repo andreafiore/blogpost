@@ -7,6 +7,7 @@ package com.cloudacademy.blogpost.repository;
 
 import com.cloudacademy.blogpost.model.Category;
 import com.cloudacademy.blogpost.model.Post;
+import java.util.List;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -25,4 +26,6 @@ public interface PostRepository extends CrudRepository<Post, Long>{
     public void deleteById(Long blogpostId);
 
     public Post findByTitleAndCategoryName(String title, String name);
+    
+    public List<Post> findByTitleOrCategoryName(String title, String categoryName);
 }
