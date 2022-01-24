@@ -5,8 +5,9 @@
  */
 package com.cloudacademy.blogpost.service;
 
+import com.cloudacademy.blogpost.model.Category;
 import com.cloudacademy.blogpost.model.Post;
-import com.cloudacademy.blogpost.repository.BlogpostRepository;
+import com.cloudacademy.blogpost.repository.CategoryRepository;
 import java.util.Optional;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -19,6 +20,7 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
+import com.cloudacademy.blogpost.repository.PostRepository;
 
 
 /**
@@ -26,13 +28,16 @@ import org.mockito.junit.MockitoJUnitRunner;
  * @author Andrea
  */
 @RunWith(MockitoJUnitRunner.class)
-public class BlogpostServiceTest {
+public class PostServiceTest {
 
     @Mock
-    BlogpostRepository postRepository;
+    PostRepository postRepository;
+    
+    @Mock
+    CategoryRepository categoryRepository;
 
     @InjectMocks
-    BlogpostService service;
+    PostService service;
 
     @Test
     public void createPostTest() {
@@ -80,6 +85,21 @@ public class BlogpostServiceTest {
         assertEquals(updatedPost.getContent(), "Lorem Ipsum...");
         assertEquals(updatedPost.getAuthor(), "Foo Bar");
         assertEquals(updatedPost.getImage(), "xyz.jpg");
+    }
+    
+    @Test
+    public void setCategoryTest() throws Exception {
+        Post post = new Post("SetCategory", "Lorem Ipsum...", "Foo Bar", "image.png");
+        Category category = new Category("Nature");
+        when(postRepository.findById(any(Long.class))).thenReturn(Optional.of(post));
+        when(categoryRepository.findById(any(Long.class))).thenReturn(Optional.of(category));
+        post.setCategory(category);
+        when(postRepository.save(any(Post.class))).thenReturn(post);
+        
+        Post updatedPost = service.setCategory(1L, 1L);
+        
+        assertEquals(updatedPost.getTitle(), "SetCategory");
+        assertEquals(updatedPost.getCategory().getName(), "Nature");
     }
 
 }
