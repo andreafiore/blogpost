@@ -29,14 +29,14 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class BlogpostServiceTest {
 
     @Mock
-    BlogpostRepository repository;
+    BlogpostRepository postRepository;
 
     @InjectMocks
     BlogpostService service;
 
     @Test
     public void createPostTest() {
-        when(repository.save(any(Post.class))).thenReturn(new Post("title", "content", "auth", "img.jpg"));
+        when(postRepository.save(any(Post.class))).thenReturn(new Post("title", "content", "auth", "img.jpg"));
 
         Post post = service.createPost("", "", "", "");
 
@@ -49,18 +49,18 @@ public class BlogpostServiceTest {
     
     @Test
     public void deletePostTest() {
-        doNothing().when(repository).deleteById(any(Long.class));
+        doNothing().when(postRepository).deleteById(any(Long.class));
         
         service.deletePost(1L);
         
-        verify(repository).deleteById(any(Long.class));
+        verify(postRepository).deleteById(any(Long.class));
     }
     
     @Test
     public void updatePost() throws PostNotFoundException {
         Post post = new Post("Post test", "content", "author", "xxx.jpg");
-        when(repository.findById(any(Long.class))).thenReturn(Optional.of(post));
-        when(repository.save(any(Post.class))).thenReturn(new Post("new Post test", "new content", "author1", "yyy.jpg"));
+        when(postRepository.findById(any(Long.class))).thenReturn(Optional.of(post));
+        when(postRepository.save(any(Post.class))).thenReturn(new Post("new Post test", "new content", "author1", "yyy.jpg"));
         
         Post updatedPost = service.updatePost(1L, "new Post test", "new content", "author1", "yyy.jpg");
         assertEquals(updatedPost.getTitle(), "new Post test");
@@ -72,8 +72,8 @@ public class BlogpostServiceTest {
     @Test
     public void partialUpdatePost() throws PostNotFoundException {
         Post post = new Post("Test", "Lorem Ipsum...", "Foo Bar", "abc.jpg");
-        when(repository.findById(any(Long.class))).thenReturn(Optional.of(post));
-        when(repository.save(any(Post.class))).thenReturn(new Post("new Post test", "Lorem Ipsum...", "Foo Bar", "xyz.jpg"));
+        when(postRepository.findById(any(Long.class))).thenReturn(Optional.of(post));
+        when(postRepository.save(any(Post.class))).thenReturn(new Post("new Post test", "Lorem Ipsum...", "Foo Bar", "xyz.jpg"));
         
         Post updatedPost = service.updatePost(1L, "new Post test", null, null, null);
         assertEquals(updatedPost.getTitle(), "new Post test");

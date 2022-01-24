@@ -40,4 +40,10 @@ public class BlogpostService {
         if (image != null) post.setImage(image);
         return repository.save(post);
     }
+    
+    //public Post findByTitleAndCategory(Long postId, Long categoryId)
+    
+    public Post setCategory(Long postId, Long categoryId) {
+        return null;
+    }
 }
