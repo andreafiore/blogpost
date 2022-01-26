@@ -44,7 +44,7 @@ public class BlogpostRestController {
         return new ResponseEntity<>(posts, HttpStatus.OK);
     }
     
-    @RequestMapping(value="/posts", method=RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })
+    @RequestMapping(value="/posts/post", method=RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<PostDTO> getPostByTitleAndCategory(@RequestParam String title, @RequestParam String category) throws PostNotFoundException {
         PostDTO post = PostDTO.postEntityToDTO(service.findByTitleAndCategory(title, category));
         return new ResponseEntity<>(post, HttpStatus.OK);
