@@ -9,6 +9,6 @@ package com.cloudacademy.blogpost.service;
  *
  * @author Andrea
  */
-class CategoryNotFoundException extends Exception {
+public class CategoryNotFoundException extends Exception {
     
 }

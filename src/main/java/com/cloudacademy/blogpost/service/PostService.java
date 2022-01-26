@@ -82,15 +82,23 @@ public class PostService {
     }
     
     @Transactional
+    public Post findByTitleAndCategory(String title, String categoryName) throws PostNotFoundException {
+        Post post = postRepository.findByTitleAndCategoryName(title, categoryName);
+        if (post == null) throw new PostNotFoundException();
+        return post;
+    }
+    
+    @Transactional
     public List<Post> findByTitleOrCategoryNameAndTags(String title, String categoryName, Set<String> tagNames) {
         List<Post> posts = postRepository.findByTitleOrCategoryName(title, categoryName);
         List<Post> ret = new ArrayList();
-        for(Post post : posts) {
+        posts.forEach((post) -> {
             Set<Tag> tags = post.getTags();
             Set<String> storedTagNames = tags.stream().map(t -> t.getTagName()).collect(toSet());
-            if (storedTagNames.containsAll(tagNames))
+            if (storedTagNames.containsAll(tagNames)) {
                 ret.add(post);
-        }
+            }
+        });
         return ret;
     }
     

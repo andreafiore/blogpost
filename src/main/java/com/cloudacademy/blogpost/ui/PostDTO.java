@@ -6,10 +6,9 @@
 package com.cloudacademy.blogpost.ui;
 
 import com.cloudacademy.blogpost.model.Post;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
+import static java.util.stream.Collectors.toList;
 
 /**
  *
@@ -17,24 +16,73 @@ import java.io.IOException;
  */
 public class PostDTO {
     
+    @JsonProperty("id")
+    private Long id;
+    @JsonProperty("title")
+    private String title;
+    @JsonProperty("author")
+    private String author;
+    @JsonProperty("content")
+    private String content;
+    @JsonProperty("image")
+    private String image;
     
-    class PostSerializer extends StdSerializer<Post> {
-        public PostSerializer() {
-            this(null);
-        }
-        
-        public PostSerializer(Class<Post> post) {
-            super(post);
-        }
-        
-        @Override
-        public void serialize(Post post, JsonGenerator jsonGenerator, SerializerProvider serializer) throws IOException {
-            jsonGenerator.writeStartObject();
-            jsonGenerator.writeNumberField("id", post.getId());
-            jsonGenerator.writeStringField("title", post.getTitle());
-            jsonGenerator.writeStringField("author", post.getAuthor());
-            jsonGenerator.writeStringField("content", post.getContent());
-            jsonGenerator.writeStringField("image", post.getImage());
-        }
+    
+    public static PostDTO postEntityToDTO(Post post) {
+        return new PostDTO(post.getId(), post.getTitle(), post.getContent(), post.getAuthor());
+    }
+    
+    public static PostDTO[] postEntitiesToDTO(List<Post> posts) {
+        List<PostDTO> list = posts.stream().map(post -> new PostDTO(post.getId(), post.getTitle(), post.getContent(), post.getAuthor()))
+                .collect(toList());
+        return list.toArray(new PostDTO[0]);
+    }
+
+    public PostDTO(Long id, String title, String author, String content) {
+        this.id = id;
+        this.title = title;
+        this.author = author;
+        this.content = content;
+    }
+    
+    
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }
