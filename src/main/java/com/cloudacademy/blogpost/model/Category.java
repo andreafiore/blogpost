@@ -13,7 +13,6 @@ import javax.persistence.*;
  * @author Andrea
  */
 @Entity
-
 public class Category implements Serializable {
     
     @Id
@@ -23,8 +22,12 @@ public class Category implements Serializable {
     @Column(name="name")
     private String name;
     
-    public Category(String name) {
+    @Column(name="uniquekey")
+    private String uniqueKey;
+    
+    public Category(String name, String uniqueKey) {
         this.name = name;
+        this.uniqueKey = uniqueKey;
     }
 
     public Category() {
@@ -46,4 +49,11 @@ public class Category implements Serializable {
         this.name = name;
     }
     
+    public String getUniqueKey() {
+        return uniqueKey;
+    }
+    
+    public void setUniqueKey(String uniqueKey) {
+        this.uniqueKey = uniqueKey;
+    }
 }

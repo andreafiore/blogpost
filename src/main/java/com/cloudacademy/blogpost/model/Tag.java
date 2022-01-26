@@ -26,10 +26,14 @@ public class Tag implements Serializable {
     @Column(name="tagName")
     private String tagName;
     
+    @Column(name="uniquekey")
+    private String uniqueKey;
+    
     public Tag(){}
     
-    public Tag(String tag) {
+    public Tag(String tag, String uniqueKey) {
         this.tagName = tag;
+        this.uniqueKey = uniqueKey;
     }
     
     public Long getId() {
@@ -46,5 +50,13 @@ public class Tag implements Serializable {
     
     public void setTagName(String tagName) {
         this.tagName = tagName;
+    }
+    
+    public String getUniqueKey() {
+        return uniqueKey;
+    }
+    
+    public void setUniqueKey(String uniqueKey) {
+        this.uniqueKey = uniqueKey;
     }
 }

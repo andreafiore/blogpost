@@ -13,7 +13,6 @@ import javax.transaction.Transactional;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +60,7 @@ public class PostRepositoryTest {
     @Transactional
     public void findByTitleAndCategoryNameTest() {
         Post post = new Post("a", "b", "c", "d");
-        Category category = new Category("Food");
+        Category category = new Category("Food", "FOOD");
         categoryRepository.save(category);
         post.setCategory(category);
         
@@ -76,7 +75,7 @@ public class PostRepositoryTest {
     @Transactional
     public void findByTitleOrCategoryNameTest() {
         Post post = new Post("a", "b", "c", "d");
-        Category category = new Category("Food");
+        Category category = new Category("Food", "FOOD");
         Post post2 = new Post("title", "", "", "");
         categoryRepository.save(category);
         post.setCategory(category);

@@ -133,7 +133,7 @@ public class PostServiceTest {
     @Test
     public void setCategoryTest() throws Exception {
         Post post = new Post("SetCategory", "Lorem Ipsum...", "Foo Bar", "image.png");
-        Category category = new Category("Nature");
+        Category category = new Category("Nature", "NATURE");
         when(postRepository.findById(any(Long.class))).thenReturn(Optional.of(post));
         when(categoryRepository.findById(any(Long.class))).thenReturn(Optional.of(category));
         post.setCategory(category);
@@ -147,7 +147,7 @@ public class PostServiceTest {
     
     @Test
     public void setCategoryTestPostNotFound() throws Exception {
-        Category category = new Category("Nature");
+        Category category = new Category("Nature", "NATURE");
         when(postRepository.findById(any(Long.class))).thenReturn(Optional.empty());
         when(categoryRepository.findById(any(Long.class))).thenReturn(Optional.of(category));
         
@@ -170,10 +170,10 @@ public class PostServiceTest {
     
     @Test
     public void findByTitleOrCategoryNameAndTags() {
-        Set<Tag> tagSet1 = Arrays.asList(new Tag("nature"), new Tag("animals"), new Tag("photo")).stream().collect(toSet());
-        Set<Tag> tagSet2 = Arrays.asList(new Tag("animals"), new Tag("food")).stream().collect(toSet());
-        Category cat1 = new Category("Cat1");
-        Category cat2 = new Category("Cat2");
+        Set<Tag> tagSet1 = Arrays.asList(new Tag("nature", "NATURE"), new Tag("animals", "ANIMALS"), new Tag("photo", "PHOTO")).stream().collect(toSet());
+        Set<Tag> tagSet2 = Arrays.asList(new Tag("animals", "ANIMALS"), new Tag("food", "FOOD")).stream().collect(toSet());
+        Category cat1 = new Category("Cat1", "CAT_1");
+        Category cat2 = new Category("Cat2", "CAT_2");
         Post post1 = new Post("title1", "", "", "");
         Post post2 = new Post("title2", "", "", "");
         
@@ -194,14 +194,14 @@ public class PostServiceTest {
     @Test
     public void addTagTest() throws PostNotFoundException {
         Post post = new Post("", "", "", "");
-        Tag tag = new Tag("test_test");
+        Tag tag = new Tag("test_test", "TEST_TEST");
         when(postRepository.findById(any(Long.class))).thenReturn(Optional.of(post));
         when(tagRepository.save(any(Tag.class))).thenReturn(tag);
         Post newPost = new Post("", "", "", "");
         newPost.setTags(Arrays.asList(tag).stream().collect(toSet()));
         when(postRepository.save(any(Post.class))).thenReturn(newPost);
         
-        Post postUpdated = service.addTag(1L, "test_test");
+        Post postUpdated = service.addTag(1L, "test_test", "TEST_TEST");
         assertNotNull(postUpdated);
         assertEquals(postUpdated.getTags().size(), 1);
         assertEquals(postUpdated.getTags().stream().collect(toList()).get(0).getTagName(), "test_test");
@@ -211,7 +211,7 @@ public class PostServiceTest {
     public void addTagTestPostNotFound() throws PostNotFoundException {
         when(postRepository.findById(any(Long.class))).thenReturn(Optional.empty());
         PostNotFoundException exception = assertThrows(PostNotFoundException.class, () -> {
-            service.addTag(1L, "test");
+            service.addTag(1L, "test", "TEST");
         });
         assertTrue(exception.toString().contains("PostNotFoundException"));
     }
@@ -219,7 +219,7 @@ public class PostServiceTest {
     @Test
     public void removeTag() throws PostNotFoundException {
         Post post = new Post("", "", "", "");
-        Tag tag = new Tag("tag");
+        Tag tag = new Tag("tag", "TAG");
         tag.setId(1L);
         post.setTags(Arrays.asList(tag).stream().collect(toSet()));
         when(postRepository.findById(any(Long.class))).thenReturn(Optional.of(post));
@@ -236,7 +236,7 @@ public class PostServiceTest {
     public void removeTagPostNotFound() throws PostNotFoundException {
         when(postRepository.findById(any(Long.class))).thenReturn(Optional.empty());
         PostNotFoundException exception = assertThrows(PostNotFoundException.class, () -> {
-            service.addTag(1L, "test");
+            service.addTag(1L, "test", "TEST");
         });
         assertTrue(exception.toString().contains("PostNotFoundException"));
     }

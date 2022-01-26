@@ -8,7 +8,7 @@
  * Created: 22-gen-2022
  */
 
-INSERT INTO category(name) VALUES ('Travel');
-INSERT INTO category(name) VALUES ('Food');
-INSERT INTO category(name) VALUES ('Animals');
-INSERT INTO category(name) VALUES ('Sport');
+INSERT INTO category(name, uniquekey) VALUES ('Travel', 'TRAVEL');
+INSERT INTO category(name, uniquekey) VALUES ('Food', 'FOOD');
+INSERT INTO category(name, uniquekey) VALUES ('Animals', 'ANIMALS');
+INSERT INTO category(name, uniquekey) VALUES ('Sport', 'SPORT');

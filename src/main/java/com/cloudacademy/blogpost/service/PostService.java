@@ -17,7 +17,6 @@ import com.cloudacademy.blogpost.repository.TagRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 import javax.transaction.Transactional;
 
@@ -96,7 +95,7 @@ public class PostService {
     }
     
     @Transactional
-    public Post addTag(Long postId, String tagName) throws PostNotFoundException {
+    public Post addTag(Long postId, String tagName, String uniqueKey) throws PostNotFoundException {
         Optional<Post> postOpt = postRepository.findById(postId);
         if (!postOpt.isPresent()) throw new PostNotFoundException();
         Post post = postOpt.get();
@@ -105,7 +104,7 @@ public class PostService {
             tags = new ArrayList<Tag>().stream().collect(toSet());
             post.setTags(tags);
         }
-        Tag savedTag = tagsRepository.save(new Tag(tagName));
+        Tag savedTag = tagsRepository.save(new Tag(tagName, uniqueKey));
         tags.add(savedTag);
         return postRepository.save(post);
     }

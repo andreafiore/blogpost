@@ -28,8 +28,8 @@ public class TagRepositoryTest {
     
     @Test
     public void saveAllTagsTest() {
-        Tag tag1 = new Tag("#mountain");
-        Tag tag2 = new Tag("#nature");
+        Tag tag1 = new Tag("#mountain", "MOUNTAIN");
+        Tag tag2 = new Tag("#nature", "NATURE");
         
         List<Tag> tags = new ArrayList();
         tags.add(tag1);
