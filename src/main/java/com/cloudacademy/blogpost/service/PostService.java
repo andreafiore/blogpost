@@ -24,106 +24,33 @@ import javax.transaction.Transactional;
  *
  * @author Andrea
  */
-@Service
-public class PostService {
 
-    @Autowired
-    PostRepository postRepository;
-    
-    @Autowired
-    CategoryRepository categoryRepository;
-    
-    @Autowired
-    TagRepository tagsRepository;
-    
-    public Post getPost(Long postId) throws PostNotFoundException {
-        Optional<Post> postOpt = postRepository.findById(postId);
-        if(!postOpt.isPresent()) throw new PostNotFoundException();
-        return postOpt.get();
-    }
-    
-    public List<Post> getPosts() {
-        List<Post> ret = new ArrayList();
-        Iterable<Post> iterable = postRepository.findAll();
-        for(Post post : iterable) ret.add(post);
-        return ret;
-    }
+public interface PostService {
 
-    public Post createPost(String title, String content, String author, String image) {
-        Post post = new Post(title, content, author, image);
-        return postRepository.save(post);
-    }
+    Post getPost(Long postId) throws PostNotFoundException;
 
-    public void deletePost(long l) {
-        postRepository.deleteById(l);
-    }
-    
-    public Post updatePost(Long postId, String title, String content, String author, String image) throws PostNotFoundException {
-        Optional<Post> opt = postRepository.findById(postId);
-        if (!opt.isPresent()) throw new PostNotFoundException();
-        Post post = opt.get();
-        if (title != null) post.setTitle(title);
-        if (content != null) post.setContent(content);
-        if (author != null) post.setAuthor(author);
-        if (image != null) post.setImage(image);
-        return postRepository.save(post);
-    }
-    
+    public List<Post> getPosts();
+
+    public Post createPost(String title, String content, String author, String image);
+
     @Transactional
-    public Post setCategory(Long postId, Long categoryId) throws PostNotFoundException, CategoryNotFoundException {
-        Optional<Category> categoryOpt = categoryRepository.findById(categoryId);
-        if(!categoryOpt.isPresent()) throw new CategoryNotFoundException();
-        Optional<Post> postOpt = postRepository.findById(postId);
-        if(!postOpt.isPresent()) throw new PostNotFoundException();
-        Post post = postOpt.get();
-        Category category = categoryOpt.get();
-        post.setCategory(category);
-        return postRepository.save(post);
-    }
-    
+    public void deletePost(Long l) throws PostNotFoundException;
+
+    public Post updatePost(Long postId, String title, String content, String author, String image) throws PostNotFoundException;
+
     @Transactional
-    public Post findByTitleAndCategory(String title, String categoryName) throws PostNotFoundException {
-        Post post = postRepository.findByTitleAndCategoryName(title, categoryName);
-        if (post == null) throw new PostNotFoundException();
-        return post;
-    }
-    
+    public Post setCategory(Long postId, String categoryKey) throws PostNotFoundException, CategoryNotFoundException;
+
     @Transactional
-    public List<Post> findByTitleOrCategoryNameAndTags(String title, String categoryName, Set<String> tagNames) {
-        List<Post> posts = postRepository.findByTitleOrCategoryName(title, categoryName);
-        List<Post> ret = new ArrayList();
-        posts.forEach((post) -> {
-            Set<Tag> tags = post.getTags();
-            Set<String> storedTagNames = tags.stream().map(t -> t.getTagName()).collect(toSet());
-            if (storedTagNames.containsAll(tagNames)) {
-                ret.add(post);
-            }
-        });
-        return ret;
-    }
-    
+    public Post findByTitleAndCategory(String title, String categoryUniqueKey) throws PostNotFoundException;
+
     @Transactional
-    public Post addTag(Long postId, String tagName, String uniqueKey) throws PostNotFoundException {
-        Optional<Post> postOpt = postRepository.findById(postId);
-        if (!postOpt.isPresent()) throw new PostNotFoundException();
-        Post post = postOpt.get();
-        Set<Tag> tags = post.getTags();
-        if (tags == null) {
-            tags = new ArrayList<Tag>().stream().collect(toSet());
-            post.setTags(tags);
-        }
-        Tag savedTag = tagsRepository.save(new Tag(tagName, uniqueKey));
-        tags.add(savedTag);
-        return postRepository.save(post);
-    }
-    
+    public List<Post> findByTitleOrCategoryNameAndTags(String title, String categoryName, Set<String> tagNames);
+
     @Transactional
-    public Post removeTag(Long postId, Long tagId) throws PostNotFoundException {
-        Optional<Post> postOpt = postRepository.findById(postId);
-        if (!postOpt.isPresent()) throw new PostNotFoundException();
-        Post post = postOpt.get();
-        Set<Tag> tags = post.getTags();
-        tags.removeIf(t -> tagId.equals(t.getId()));
-        return postRepository.save(post);
-    }
+    public Post addTag(Long postId, String tagName, String uniqueKey) throws PostNotFoundException;
+
+    @Transactional
+    public Post removeTag(Long postId, String tagUniqueKey) throws PostNotFoundException;
+
 }

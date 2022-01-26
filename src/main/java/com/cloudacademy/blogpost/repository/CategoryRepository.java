@@ -17,4 +17,6 @@ import org.springframework.stereotype.Repository;
 public interface CategoryRepository extends CrudRepository<Category, Long> {
     @Override
     public Category save(Category category);
+
+    public Category findByUniqueKey(String uniqueKey);
 }

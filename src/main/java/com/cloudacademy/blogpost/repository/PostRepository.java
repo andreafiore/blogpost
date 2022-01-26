@@ -23,7 +23,7 @@ public interface PostRepository extends CrudRepository<Post, Long>{
     @Override
     public void deleteById(Long blogpostId);
 
-    public Post findByTitleAndCategoryName(String title, String name);
+    public Post findByTitleAndCategoryUniqueKey(String title, String categoryUniqueKey);
     
     public List<Post> findByTitleOrCategoryName(String title, String categoryName);
 }

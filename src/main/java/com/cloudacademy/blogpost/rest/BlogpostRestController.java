@@ -9,18 +9,14 @@ import com.cloudacademy.blogpost.model.Post;
 import com.cloudacademy.blogpost.service.CategoryNotFoundException;
 import com.cloudacademy.blogpost.service.PostNotFoundException;
 import com.cloudacademy.blogpost.service.PostService;
-import com.cloudacademy.blogpost.ui.PostDTO;
-import com.cloudacademy.blogpost.ui.TagDTO;
+import com.cloudacademy.blogpost.dto.CategoryDTO;
+import com.cloudacademy.blogpost.dto.PostDTO;
+import com.cloudacademy.blogpost.dto.TagDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  *
@@ -29,6 +25,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("blogpost")
 public class BlogpostRestController implements BlogpostRestInterface{
+
+    private final String bearerToken = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9";
     
     @Autowired
     PostService service;
@@ -63,8 +61,8 @@ public class BlogpostRestController implements BlogpostRestInterface{
     
     @RequestMapping(value="/posts/{postId}", method=RequestMethod.PUT, produces = { MediaType.APPLICATION_JSON_VALUE })
     @Override
-    public ResponseEntity<PostDTO> setPostCategory(@RequestParam Long postId, @RequestBody String category) throws PostNotFoundException, CategoryNotFoundException {
-        PostDTO post = PostDTO.postEntityToDTO(service.setCategory(postId, postId));
+    public ResponseEntity<PostDTO> setPostCategory(@PathVariable Long postId, @RequestBody CategoryDTO category) throws PostNotFoundException, CategoryNotFoundException {
+        PostDTO post = PostDTO.postEntityToDTO(service.setCategory(postId, category.getUniqueKey()));
         return new ResponseEntity<>(post, HttpStatus.OK);
     }
     
@@ -77,7 +75,8 @@ public class BlogpostRestController implements BlogpostRestInterface{
     
     @RequestMapping(value="/posts/{postId}", method=RequestMethod.DELETE, produces = { MediaType.APPLICATION_JSON_VALUE })
     @Override
-    public ResponseEntity<Void> deletePost(@PathVariable Long postId) throws PostNotFoundException {
+    public ResponseEntity<Void> deletePost(@RequestHeader("X-Authorization") String token, @PathVariable Long postId) throws PostNotFoundException, UserNotAuthorizedException {
+        if (!bearerToken.equals(token)) throw new UserNotAuthorizedException();
         service.deletePost(postId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -89,10 +88,10 @@ public class BlogpostRestController implements BlogpostRestInterface{
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
     
-    @RequestMapping(value="/posts/{postId}/tag", method=RequestMethod.DELETE, produces = { MediaType.APPLICATION_JSON_VALUE })
+    @RequestMapping(value="/posts/{postId}/tag/{tagUniqueKey}", method=RequestMethod.DELETE, produces = { MediaType.APPLICATION_JSON_VALUE })
     @Override
-    public ResponseEntity<PostDTO> removeTagFromPost(@PathVariable Long postId, @RequestBody TagDTO tagDto) throws PostNotFoundException {
-        PostDTO dto = PostDTO.postEntityToDTO(service.removeTag(postId, postId));
+    public ResponseEntity<PostDTO> removeTagFromPost(@PathVariable Long postId, @PathVariable String tagUniqueKey) throws PostNotFoundException {
+        PostDTO dto = PostDTO.postEntityToDTO(service.removeTag(postId, tagUniqueKey));
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
     

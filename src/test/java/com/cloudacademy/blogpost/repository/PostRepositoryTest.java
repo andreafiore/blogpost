@@ -10,14 +10,14 @@ import com.cloudacademy.blogpost.model.Post;
 import java.util.List;
 import java.util.Optional;
 import javax.transaction.Transactional;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import static org.junit.Assert.*;
 
 /**
  *
@@ -58,7 +58,7 @@ public class PostRepositoryTest {
     
     @Test
     @Transactional
-    public void findByTitleAndCategoryNameTest() {
+    public void findByTitleAndCategoryUniqueKeyTest() {
         Post post = new Post("a", "b", "c", "d");
         Category category = new Category("Food", "FOOD");
         categoryRepository.save(category);
@@ -66,9 +66,16 @@ public class PostRepositoryTest {
         
         postRepository.save(post);
         
-        Post found = postRepository.findByTitleAndCategoryName("a", "Food");
+        Post found = postRepository.findByTitleAndCategoryUniqueKey("a", "FOOD");
         assertEquals(found.getTitle(), "a");
         assertEquals(found.getCategory().getName(), "Food");
+        assertEquals(found.getCategory().getUniqueKey(), "FOOD");
+    }
+
+    @Test
+    public void findByTitleAndCategoryUniqueKeyTestNull() {
+        Post found = postRepository.findByTitleAndCategoryUniqueKey("b", "xxx");
+        assertNull(found);
     }
     
     @Test

@@ -7,8 +7,9 @@ package com.cloudacademy.blogpost.rest;
 
 import com.cloudacademy.blogpost.service.CategoryNotFoundException;
 import com.cloudacademy.blogpost.service.PostNotFoundException;
-import com.cloudacademy.blogpost.ui.PostDTO;
-import com.cloudacademy.blogpost.ui.TagDTO;
+import com.cloudacademy.blogpost.dto.CategoryDTO;
+import com.cloudacademy.blogpost.dto.PostDTO;
+import com.cloudacademy.blogpost.dto.TagDTO;
 import org.springframework.http.ResponseEntity;
 
 /**
@@ -17,21 +18,23 @@ import org.springframework.http.ResponseEntity;
  */
 interface BlogpostRestInterface {
     
-    public ResponseEntity<PostDTO> getPost(Long postId) throws PostNotFoundException;
+    ResponseEntity<PostDTO> getPost(Long postId) throws PostNotFoundException;
     
-    public ResponseEntity<PostDTO[]> getPosts() throws PostNotFoundException;
+    ResponseEntity<PostDTO[]> getPosts() throws PostNotFoundException;
+
+
     
-    public ResponseEntity<PostDTO> addPost(PostDTO postDto);
+    ResponseEntity<PostDTO> addPost(PostDTO postDto);
     
-    public ResponseEntity<PostDTO> getPostByTitleAndCategory(String title, String category) throws PostNotFoundException;
+    ResponseEntity<PostDTO> getPostByTitleAndCategory(String title, String category) throws PostNotFoundException;
     
-    public ResponseEntity<PostDTO> setPostCategory(Long postId, String category) throws PostNotFoundException, CategoryNotFoundException;
+    ResponseEntity<PostDTO> setPostCategory(Long postId, CategoryDTO category) throws PostNotFoundException, CategoryNotFoundException;
     
-    public ResponseEntity<PostDTO> updatePost(Long postId, PostDTO postDto) throws PostNotFoundException;
+    ResponseEntity<PostDTO> updatePost(Long postId, PostDTO postDto) throws PostNotFoundException;
     
-    public ResponseEntity<Void> deletePost(Long postId) throws PostNotFoundException;
+    ResponseEntity<Void> deletePost(String token, Long postId) throws PostNotFoundException, UserNotAuthorizedException;
     
-    public ResponseEntity<PostDTO> addTagToPost(Long postId, TagDTO tagDto) throws PostNotFoundException;
+    ResponseEntity<PostDTO> addTagToPost(Long postId, TagDTO tagDto) throws PostNotFoundException;
     
-    public ResponseEntity<PostDTO> removeTagFromPost(Long postId, TagDTO tagDto) throws PostNotFoundException;
+    ResponseEntity<PostDTO> removeTagFromPost(Long postId, String tagUniqueKey) throws PostNotFoundException;
 }

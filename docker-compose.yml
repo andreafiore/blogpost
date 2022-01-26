@@ -1,0 +1,7 @@
+version: '2.2'
+services:
+  blogpost:
+    image: blogpost:latest
+    container_name: blogpost
+    ports:
+      - "127.0.0.1:8090:8090"

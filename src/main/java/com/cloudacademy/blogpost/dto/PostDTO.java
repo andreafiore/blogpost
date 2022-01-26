@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.cloudacademy.blogpost.ui;
+package com.cloudacademy.blogpost.dto;
 
 import com.cloudacademy.blogpost.model.Post;
 import com.cloudacademy.blogpost.model.Category;
@@ -16,11 +16,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import java.util.List;
 import java.util.Set;
-
-import java.util.Arrays;
-import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.toList;
 
 
 /**
@@ -54,6 +49,7 @@ public class PostDTO {
         Set<Tag> tags = post.getTags();
         String[] tagKeys = tags == null ? new String[0] : tags.stream().map(t -> t.getUniqueKey()).toArray(String[]::new);
         PostDTO postDTO = new PostDTO();
+        postDTO.setId(post.getId());
         postDTO.setTitle(post.getTitle());
         postDTO.setAuthor(post.getAuthor());
         postDTO.setContent(post.getContent());
@@ -76,7 +72,6 @@ public class PostDTO {
         this.content = content;
         this.image = image;
         this.category = category;
-        this.tags = tags;
     }
     
     

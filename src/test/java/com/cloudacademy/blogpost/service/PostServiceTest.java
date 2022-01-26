@@ -50,7 +50,7 @@ public class PostServiceTest {
     TagRepository tagRepository;
 
     @InjectMocks
-    PostService service;
+    PostServiceImpl service;
 
     @Test
     public void getPostTest() throws PostNotFoundException {
@@ -96,12 +96,23 @@ public class PostServiceTest {
     }
     
     @Test
-    public void deletePostTest() {
+    public void deletePostTest() throws PostNotFoundException {
+        when(postRepository.findById(any(Long.class))).thenReturn(Optional.of(new Post("", "", "", "")));
         doNothing().when(postRepository).deleteById(any(Long.class));
         
         service.deletePost(1L);
         
         verify(postRepository).deleteById(any(Long.class));
+    }
+
+    @Test
+    public void deletePostTestNonExistingPost() throws PostNotFoundException {
+        when(postRepository.findById(any(Long.class))).thenReturn(Optional.empty());
+
+        PostNotFoundException exception = assertThrows(PostNotFoundException.class, () -> {
+            service.deletePost(1L);
+        });
+        assertTrue(exception.toString().contains("PostNotFoundException"));
     }
     
     @Test
@@ -135,11 +146,11 @@ public class PostServiceTest {
         Post post = new Post("SetCategory", "Lorem Ipsum...", "Foo Bar", "image.png");
         Category category = new Category("Nature", "NATURE");
         when(postRepository.findById(any(Long.class))).thenReturn(Optional.of(post));
-        when(categoryRepository.findById(any(Long.class))).thenReturn(Optional.of(category));
+        when(categoryRepository.findByUniqueKey(any(String.class))).thenReturn(category);
         post.setCategory(category);
         when(postRepository.save(any(Post.class))).thenReturn(post);
         
-        Post updatedPost = service.setCategory(1L, 1L);
+        Post updatedPost = service.setCategory(1L, "NATURE");
         
         assertEquals(updatedPost.getTitle(), "SetCategory");
         assertEquals(updatedPost.getCategory().getName(), "Nature");
@@ -149,20 +160,20 @@ public class PostServiceTest {
     public void setCategoryTestPostNotFound() throws Exception {
         Category category = new Category("Nature", "NATURE");
         when(postRepository.findById(any(Long.class))).thenReturn(Optional.empty());
-        when(categoryRepository.findById(any(Long.class))).thenReturn(Optional.of(category));
+        when(categoryRepository.findByUniqueKey(any(String.class))).thenReturn(category);
         
         PostNotFoundException exception = assertThrows(PostNotFoundException.class, () -> {
-            service.setCategory(1L, 1L);
+            service.setCategory(1L, "NATURE");
         });
-        System.out.println(exception.toString());
+
         assertTrue(exception.toString().contains("PostNotFoundException"));
     }
     
     @Test
     public void setCategoryTestCategoryNotFound() throws Exception {
-        when(categoryRepository.findById(any(Long.class))).thenReturn(Optional.empty());
+        when(categoryRepository.findByUniqueKey(any(String.class))).thenReturn(null);
         CategoryNotFoundException exception = assertThrows(CategoryNotFoundException.class, () -> {
-            service.setCategory(1L, 1L);
+            service.setCategory(1L, "");
         });
         System.out.println(exception.toString());
         assertTrue(exception.toString().contains("CategoryNotFoundException"));
@@ -228,7 +239,7 @@ public class PostServiceTest {
         post.setTags(emptySet);
         when(postRepository.save(any(Post.class))).thenReturn(post);
         
-        Post p = service.removeTag(1L, 1L);
+        Post p = service.removeTag(1L, "TAG");
         assertNotNull(p);
     }
     

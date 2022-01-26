@@ -1,4 +1,4 @@
-package com.cloudacademy.blogpost.ui;
+package com.cloudacademy.blogpost.dto;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
