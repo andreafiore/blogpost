@@ -5,10 +5,8 @@
  */
 package com.cloudacademy.blogpost.repository;
 
-import com.cloudacademy.blogpost.model.Category;
 import com.cloudacademy.blogpost.model.Post;
 import java.util.List;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -18,7 +16,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface PostRepository extends CrudRepository<Post, Long>{
-
+    
     @Override
     public Post save(Post blogpost);
 
