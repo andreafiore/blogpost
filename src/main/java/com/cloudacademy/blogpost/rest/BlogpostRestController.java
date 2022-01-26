@@ -57,4 +57,16 @@ public class BlogpostRestController {
     }
     
     
+    @RequestMapping(value="/posts/{postId}", method=RequestMethod.PATCH, produces = { MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<PostDTO> updatePost(@PathVariable Long postId, @RequestBody PostDTO postDto) throws PostNotFoundException {
+        PostDTO post = PostDTO.postEntityToDTO(service.updatePost(postId, postDto.getTitle(), postDto.getContent(), postDto.getAuthor(), postDto.getImage()));
+        return new ResponseEntity<>(post, HttpStatus.OK);
+    }
+    
+    @RequestMapping(value="/posts/{postId}", method=RequestMethod.DELETE, produces = { MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<Void> deletePost(@PathVariable Long postId) throws PostNotFoundException {
+        service.deletePost(postId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
 }
