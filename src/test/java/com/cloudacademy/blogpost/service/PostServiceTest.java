@@ -178,6 +178,30 @@ public class PostServiceTest {
         System.out.println(exception.toString());
         assertTrue(exception.toString().contains("CategoryNotFoundException"));
     }
+
+    @Test
+    public void findByTitleAndCategory() throws PostNotFoundException {
+        Post post = new Post("title", "", "", "");
+        post.setCategory(new Category("test", "TEST"));
+        when(postRepository.findByTitleAndCategoryUniqueKey(any(String.class), any(String.class))).thenReturn(post);
+
+        Post found = service.findByTitleAndCategory("title", "TEST");
+
+        assertNotNull(found);
+        assertEquals(found.getTitle(), "title");
+        assertNotNull(found.getCategory());
+        assertEquals(found.getCategory().getUniqueKey(), "TEST");
+    }
+
+    @Test
+    public void findByTitleAndCategoryPostNotFound() throws PostNotFoundException {
+        when(postRepository.findByTitleAndCategoryUniqueKey(any(String.class), any(String.class))).thenReturn(null);
+
+        PostNotFoundException exception = assertThrows(PostNotFoundException.class, () -> {
+            service.findByTitleAndCategory("title", "TEST");
+        });
+        assertTrue(exception.toString().contains("PostNotFoundException"));
+    }
     
     @Test
     public void findByTitleOrCategoryNameAndTags() {
