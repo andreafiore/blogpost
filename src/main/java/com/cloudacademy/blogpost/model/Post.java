@@ -7,6 +7,7 @@ package com.cloudacademy.blogpost.model;
 
 import java.util.Set;
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -22,6 +23,7 @@ public class Post {
     @Column(name="title")
     private String title;
     @Column(name="content")
+    @Size(max = 1024)
     private String content;
     @Column(name="author")
     private String author;
