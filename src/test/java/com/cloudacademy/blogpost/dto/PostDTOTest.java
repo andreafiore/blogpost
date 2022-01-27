@@ -1,8 +1,8 @@
 package com.cloudacademy.blogpost.dto;
 
-import com.cloudacademy.blogpost.model.Post;
-import com.cloudacademy.blogpost.model.Category;
-import com.cloudacademy.blogpost.model.Tag;
+import com.cloudacademy.blogpost.entities.Post;
+import com.cloudacademy.blogpost.entities.Category;
+import com.cloudacademy.blogpost.entities.Tag;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.Test;
 

@@ -5,7 +5,7 @@
  */
 package com.cloudacademy.blogpost.repository;
 
-import com.cloudacademy.blogpost.model.Post;
+import com.cloudacademy.blogpost.entities.Post;
 import java.util.List;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;

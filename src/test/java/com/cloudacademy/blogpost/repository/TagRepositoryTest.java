@@ -5,7 +5,7 @@
  */
 package com.cloudacademy.blogpost.repository;
 
-import com.cloudacademy.blogpost.model.Tag;
+import com.cloudacademy.blogpost.entities.Tag;
 import java.util.ArrayList;
 import java.util.List;
 import static org.junit.Assert.assertEquals;

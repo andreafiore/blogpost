@@ -5,8 +5,8 @@
  */
 package com.cloudacademy.blogpost.repository;
 
-import com.cloudacademy.blogpost.model.Category;
-import com.cloudacademy.blogpost.model.Post;
+import com.cloudacademy.blogpost.entities.Category;
+import com.cloudacademy.blogpost.entities.Post;
 import java.util.List;
 import java.util.Optional;
 import javax.transaction.Transactional;

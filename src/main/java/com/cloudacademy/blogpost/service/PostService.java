@@ -5,9 +5,9 @@
  */
 package com.cloudacademy.blogpost.service;
 
-import com.cloudacademy.blogpost.model.Category;
-import com.cloudacademy.blogpost.model.Post;
-import com.cloudacademy.blogpost.model.Tag;
+import com.cloudacademy.blogpost.entities.Category;
+import com.cloudacademy.blogpost.entities.Post;
+import com.cloudacademy.blogpost.entities.Tag;
 import com.cloudacademy.blogpost.repository.CategoryRepository;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;

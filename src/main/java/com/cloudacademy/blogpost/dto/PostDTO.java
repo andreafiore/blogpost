@@ -5,9 +5,9 @@
  */
 package com.cloudacademy.blogpost.dto;
 
-import com.cloudacademy.blogpost.model.Post;
-import com.cloudacademy.blogpost.model.Category;
-import com.cloudacademy.blogpost.model.Tag;
+import com.cloudacademy.blogpost.entities.Post;
+import com.cloudacademy.blogpost.entities.Category;
+import com.cloudacademy.blogpost.entities.Tag;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;

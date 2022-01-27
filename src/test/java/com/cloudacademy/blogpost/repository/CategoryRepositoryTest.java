@@ -1,6 +1,6 @@
 package com.cloudacademy.blogpost.repository;
 
-import com.cloudacademy.blogpost.model.Category;
+import com.cloudacademy.blogpost.entities.Category;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

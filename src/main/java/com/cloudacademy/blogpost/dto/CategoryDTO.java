@@ -2,7 +2,7 @@ package com.cloudacademy.blogpost.dto;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.cloudacademy.blogpost.model.Category;
+import com.cloudacademy.blogpost.entities.Category;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;

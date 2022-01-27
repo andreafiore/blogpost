@@ -5,9 +5,9 @@
  */
 package com.cloudacademy.blogpost.rest;
 
-import com.cloudacademy.blogpost.model.Post;
-import com.cloudacademy.blogpost.model.Category;
-import com.cloudacademy.blogpost.model.Tag;
+import com.cloudacademy.blogpost.entities.Post;
+import com.cloudacademy.blogpost.entities.Category;
+import com.cloudacademy.blogpost.entities.Tag;
 import com.cloudacademy.blogpost.service.CategoryNotFoundException;
 import com.cloudacademy.blogpost.service.PostNotFoundException;
 import com.cloudacademy.blogpost.service.PostService;
